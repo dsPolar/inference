@@ -5,23 +5,19 @@ import imagebase
 import neighbour
 
 def denoise(image):
-    found = False
-    x = image.shape()[0]
-    y = image.shape()[1]
-    for i in range(x):
-        for j in range(y):
-            sum = 0
-            for ne in neighbour.neighbours(i,j,x,y,8):
-                sum += (image[ne]*image[i,j])
-            if(sum > 0):
-                image[i,j] = 1
-            else:
-                image[i,j] = -1
+    x = image.shape[0]
+    y = image.shape[1]
+    for t in range(500):
+        for i in range(x):
+            for j in range(y):
+                sum = 0
+                for ne in neighbour.neighbours(i,j,x,y,8):
+                    sum += (image[ne]*image[i,j])
+                if(sum > 0):
+                    image[i,j] = 1
+                else:
+                    image[i,j] = -1
     return im
-
-
-
-
 
 prop = 0.7
 varSigma = 0.1
