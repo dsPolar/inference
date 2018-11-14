@@ -18,6 +18,7 @@ def add_saltnpeppar_noise(im,prop):
     return im2
 
 # proportion of pixels to alter
+'''
 prop = 0.7
 varSigma = 0.1
 im = imread('text.png')
@@ -32,3 +33,4 @@ ax2.imshow(im2,cmap='gray')
 im2 = add_saltnpeppar_noise(im,prop)
 ax3 = fig.add_subplot(133)
 ax3.imshow(im2,cmap='gray')
+'''
