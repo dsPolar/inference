@@ -15,7 +15,7 @@ def postiter(image,x,y):
             if(sum > 0.5):
                 tempimage[i,j] = 1
             else:
-                tempimage[i,j] = -1
+                tempimage[i,j] = 0
     image = tempimage
     return image
 
