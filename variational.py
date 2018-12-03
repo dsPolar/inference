@@ -1,4 +1,5 @@
 import numpy as np
+import imageio
 import matplotlib.pyplot as plt
 from scipy.misc import imread
 import imagebase
@@ -37,14 +38,11 @@ def mfvb(image,iter):
 
     x = image.shape[0]
     y = image.shape[1]
-
     #Initialise the variational distributions
     #Initialise M
-    for i in range(x):
-        for j in range(y):
-            m[i][j][0] = 0
-            mu[i][j][0] = 0
-            q[i][j] = 0
+    m = np.zeros((x,y,iter+1),order='C')
+    mu = np.zeros((x,y,iter+1),order='C')
+    q = np.zeros((x,y),order='C')
     #image is latent
 
     for t in range(iter):
@@ -54,28 +52,29 @@ def mfvb(image,iter):
                 sum = 0
                 for ne in neighbour.neighbours(ii,jj,x,y,8):
                     #Add the -1..1 product value of neighbour with current, modified by the mu value for neighbour
-                    sum += (2*image[ne] -1) * (2*image[ii][jj] -1) * mu[ne[1]][ne[2][t]
-                m[ii][jj][t+1] = sum
+                    sum += (2*image[ne] -1) * (2*image[ii][jj] -1) * mu[ne[0],ne[1],t]
 
-                mu[ii][jj][t+1] = math.tanh(m[ii][jj][t] + 1/2(p(image[ii][jj],1) - p(image[ii][jj],-1)))
+                m[ii,jj,t+1] = 0
+                mu[ii,jj,t+1] = math.tanh(m[ii,jj,t] + 1/2*(p(image[ii][jj],1) - p(image[ii][jj],-1)))
 
     qProb = 1
     for i in range(x):
         for j in range(y):
-            q[i][j] = sigm(2(m[ii][jj][iter] + 1/2(p(image[ii][jj],1) - p(image[ii][jj],-1))))
-            qProb *= q[i][j]
+            q[i,j] = sigm(2*(m[ii,jj,iter] + 1/2*(p(image[ii][jj],1) - p(image[ii][jj],-1))))
+            qProb *= q[i,j]
 
     #returns q(x == image)
     return qProb
 
+
 prop = 0.7
 varSigma = 0.1
 
-im = imread('pug.jpg')
+im = imageio.imread('chromegray.png')
 #im[i] = [0..1]
 im = im/255
 
 imG = imagebase.add_gaussian_noise(im,prop,varSigma)
 imS = imagebase.add_saltnpeppar_noise(im,prop)
-
-q = mfvb(im,20)
+posterior = 0
+posterior = mfvb(im,20)
