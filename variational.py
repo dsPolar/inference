@@ -48,6 +48,7 @@ def mfvb(image,iter):
     #image is latent
 
     for t in range(iter):
+        #[ii][jj] pair comprises the singular i iterator used in CW specification
         for ii in range(x):
             for jj in range(y):
                 sum = 0
@@ -76,3 +77,5 @@ im = im/255
 
 imG = imagebase.add_gaussian_noise(im,prop,varSigma)
 imS = imagebase.add_saltnpeppar_noise(im,prop)
+
+q = mfvb(im,20)
