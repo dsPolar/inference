@@ -64,13 +64,13 @@ def mfvb(image,iter):
             q[i][j] = sigm(2(m[ii][jj][iter] + 1/2(p(image[ii][jj],1) - p(image[ii][jj],-1))))
             qProb *= q[i][j]
 
-
+    #returns q(x == image)
     return qProb
 
 prop = 0.7
 varSigma = 0.1
 
-im = imread('chromegray.png')
+im = imread('pug.jpg')
 #im[i] = [0..1]
 im = im/255
 

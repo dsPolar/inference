@@ -13,9 +13,15 @@
     \begin{document}
     \maketitle
 
-
-
-
+    \section{Question 5}
+    Considering first $KL(p(\mathbf{x})||q(\mathbf{x}))$ when $p(\mathbf{x})$ is large and $q(\mathbf{x})$ is near zero
+    the KL divergence is massive, whereas when $p(\mathbf{x})$ is near zero and $q(\mathbf{x})$ is large, i.e we've
+    overestimated $p(\mathbf{x})$ this is far less of a problem resulting in a smaller KL divergence.
+    It is better to overfit $p(\mathbf{x})$, and to cover the non-zero parts of $p(\mathbf{x})$ than it is
+    to have near zero points of $q(\mathbf{x})$ where large points of $p(\mathbf{x})$ exist.
+    Considering instead $KL(q(\mathbf{x})||p(\mathbf{x}))$ the reverse occurs. If our approximation is large when the
+    original distribution is small then the KL divergence will be large and if the approximation is small while the
+    original distribution is large then we don't care much and the KL divergence is small.
 
 
 
