@@ -7,16 +7,26 @@ import neighbour
 import math
 
 
+def to_1d(rgb_image):
+    ret = []
+    x_dim, y_dim, z = rgb_image.shape
+    for i in range(0, x_dim):
+        ret_x = []
+        for j in range(0, y_dim):
+            ret_x.append(round(np.sum(rgb_image[i,j])/3, 1))
+        ret.append(ret_x)
+    return np.array(ret)
+
 def sigm(v):
     return (1 / (1 + np.exp(-v)))
 
 #takes an image point value a 0..1
-#takes a check value v -1..1
+#takes a check value v 0..1
 #returns Likelihood that a yields v
 def p(a,v):
     res = 0
-    val = (v + 1)/2
-    if(a == val):
+    thresh = v /2
+    if(a >= thresh):
         res = 1
     else:
         res = 0
@@ -55,26 +65,27 @@ def mfvb(image,iter):
                     sum += (2*image[ne] -1) * (2*image[ii][jj] -1) * mu[ne[0],ne[1],t]
 
                 m[ii,jj,t+1] = 0
-                mu[ii,jj,t+1] = math.tanh(m[ii,jj,t] + 1/2*(p(image[ii][jj],1) - p(image[ii][jj],-1)))
+                #mu = tanh(m_i^tau + 1/2(L_i(1) - L_i(-1)))
+                mu[ii,jj,t+1] = math.tanh(m[ii,jj,t] + 1/2*(p(image[ii][jj],1) - p(image[ii][jj],0)))
 
     qProb = 1
     for i in range(x):
         for j in range(y):
-            q[i,j] = sigm(2*(m[ii,jj,iter] + 1/2*(p(image[ii][jj],1) - p(image[ii][jj],-1))))
+            q[i,j] = sigm(2*(m[ii,jj,iter] + 1/2*(p(image[ii][jj],1) - p(image[ii][jj],0))))
             qProb *= q[i,j]
 
-    #returns q(x == image)
-    return qProb
+    #returns variational distro and mu
+    return (mu,m)
 
 
 prop = 0.7
 varSigma = 0.1
 
-im = imageio.imread('chromegray.png')
+im = to_id(imageio.imread('pug.jpg'))
 #im[i] = [0..1]
 im = im/255
 
 imG = imagebase.add_gaussian_noise(im,prop,varSigma)
 imS = imagebase.add_saltnpeppar_noise(im,prop)
 posterior = 0
-posterior = mfvb(im,20)
+mu,m = mfvb(im,20)
