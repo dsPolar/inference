@@ -32,7 +32,13 @@
         \label{fig:variationalBayes}
     \end{figure}
 
-
+    As before with Gibbs sampling we experimented with the number of iterations before the denoising results stopped
+    getting any noticeably better. The Gaussian noise saw the greatest denoising effect with just a single iteration,
+    due to the nature of the Gaussian noise.
+    The Salt and Pepper noise however required a couple more iterations to stabilise, like with Gibbs and ICM, our particular
+    image had inverted colours due to the noise. After around a dozen iterations as lot of random pixel noise was gone
+    from the image and the original patterns on our pug are easily visible. Beyond around 25 iterations there are
+    few further improvements in denoising.
 
 
 
